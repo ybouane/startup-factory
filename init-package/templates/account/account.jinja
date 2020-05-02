@@ -1,0 +1,31 @@
+<h1>Hello {{ userAccount.username }}</h1>
+<a href="/edit-profile" class="my-profile">
+	<img src="{{ userAccount.profilePicture | asset_url }}" alt="{{ userAccount.username }}" />
+	<em>{{ userAccount.bio }}</em>
+</a>
+
+{% comment %}
+<h2>Balance</h2>
+{% if userAccount.canAcceptPayments %}
+<account-payments>
+	<account-balance>
+		<span>Your balance is {{ balanceText }}</span>
+		<em>Payments will automatically be processed and payed out to your bank account.</em>
+		<a href="{{ loginLink }}" target="_blank" class="button compact">Manage payments</a>
+	</account-balance>
+	<account-transactions>
+		{% for transaction in transactions %}
+			<div class="transaction" data-transaction-id="{{ transaction.orderId }}">
+				<span class="transactionId">#{{ transaction.orderId | uppercase }}</span>
+				<span class="date">{{ transaction.creationDate | date }}</span>
+				<a class="product" href="/product/{{ transaction.products[0].handle }}">{{ transaction.products[0].title }}</a>
+				<a class="buyer" href="/user/{{ transaction.buyer.username }}">{{ transaction.buyer.username }}</a>
+				<span class="amount">{{ transaction.sellerEarning | money(transaction.currency) }}</span>
+			</div>
+		{% endfor %}
+	</account-transactions>
+</account-payments>
+{% else %}
+<a href="https://connect.stripe.com/express/oauth/authorize?client_id={{ clientId }}&state={{ stateToken }}&stripe_user[email]={{ userAccount.email }}" target="_blank" class="button">Setup payments</a>
+{% endif %}
+{% endcomment %}

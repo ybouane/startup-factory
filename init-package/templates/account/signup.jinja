@@ -1,0 +1,41 @@
+<h1>Signup</h1>
+<form action="/signup/verificationCode" method="POST" class="signup vertical">
+	<em>Fill the form bellow to sign up</em>
+	<input type="text" name="username" placeholder="Username" />
+	<input type="email" name="email" placeholder="Email" />
+	<input type="password" name="password" placeholder="Password" />
+	<input type="submit" value="Create Account" />
+</form>
+<form action="/signup" method="POST" class="signupVerification vertical">
+	<em>A verification code was sent to the email addres: "<b class="email-address"></b>". Please check your emails and copy the verification code here:</em>
+	<input type="text" name="verificationCode" placeholder="000000" />
+	<input type="submit" value="Confirm" />
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('[name="verificationCode"]').on('input', function() {
+		$(this).val($(this).val().replace(/[^0-9]/g, '').substring(0, 6));
+	});
+	var $form = $('form.signup').on('submit', async (e) => {
+		e.preventDefault();
+		try {
+			var data = controller.serializeForm($form);
+			await controller.apiPost('/signup/verificationCode', data);
+			$form.hide();
+			$('form.signupVerification .email-address').text(data.email);
+			$('form.signupVerification').css('display', 'flex').on('submit', async (e) => {
+				e.preventDefault();
+				try {
+					await controller.apiPost('/signup', {
+						...data,
+						verificationCode	: $('form.signupVerification [name="verificationCode"]').val(),
+					});
+					gtag('event', 'sign_up');
+					await controller.delay(2000);
+					location.href = '/';
+				} catch(e) {console.error(e);}
+			});
+		} catch(e) {console.error(e);}
+	});
+});
+</script>

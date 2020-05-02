@@ -1,0 +1,25 @@
+<h1>Contact</h1>
+<form action="/contact" method="POST" class="contact vertical">
+	<input type="text" name="email" required placeholder="Your email address" />
+	<input type="text" name="subject" required placeholder="Subject" />
+	<textarea name="message" placeholder="Message"></textarea>
+	<div class="g-recaptcha" data-sitekey="{{ _constants.recaptchaPublicKey }}"></div>
+	<input type="submit" value="Send" />
+</form>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	var $form = $('form.contact').on('submit', async (e) => {
+		e.preventDefault();
+		try {
+			grecaptcha.ready(async () => {
+				var payload = controller.serializeForm($form);
+				await controller.apiPost('/contact', payload);
+				await controller.delay(2000);
+				location.href = '/';
+			});
+		} catch(e) {}
+	});
+});
+</script>

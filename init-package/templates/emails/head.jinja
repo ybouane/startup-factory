@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<style>
+/* Client-specific */
+#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */
+.ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */
+body, table, td, p, a, li, blockquote{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;} /* Prevent WebKit and Windows mobile changing default text sizes */
+table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */
+/* Reset styles */
+body{margin:0; padding:0;}
+img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+table{border-collapse:collapse !important;}
+body, #bodyTable, #bodyCell{font-family:Verdana, Arial;height:100% !important; margin:0; padding:0; width:100% !important;line-height: 150%;}
+td {line-height: 150%;}
+a {color:#1abc9c;}
+		</style>
+	</head>
+	<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+		<center>
+			<table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="background-color:#F0F0F0;">
+				<tr>
+					<td align="center" valign="top">
+
+						<table border="0" cellpadding="20" cellspacing="0" width="600" id="emailContainer" style="margin:15px 0px;">
+							{% if preHeader %}
+								<tr>
+									<td align="center" valign="top" style="background-color:#E4E4E4;text-align:center;padding:10px;">
+										{{ preHeader | escape }}
+									</td>
+								</tr>
+							{% endif %}
+							<tr>
+								<td align="center" valign="top" style="background-color:#F6B93B;text-align:center;padding:10px;">
+									<center>
+										<a href="https://_DOMAIN_/" style="color:#FFFFFF;"><img src="https://_DOMAIN_/images/email-logo.png" alt="_PROJECT_NAME_" style="width:350px;" /></a>
+									</center>
+								</td>
+							</tr>
+							<tr>
+								<td align="center" valign="top" style="background-color:#FFFFFF;text-align:left;padding:20px 10px;">

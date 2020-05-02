@@ -1,0 +1,9 @@
+{
+	apps: [{
+		"name"			: "Jobs Server",
+		"script"		: "./jobs.js",
+		"instances"		: 1,
+		"exec_mode"		: "cluster",
+		"watch"			: ["./", "../models/", "../helpers/", "../config/", "../jobs/"]
+	}]
+}

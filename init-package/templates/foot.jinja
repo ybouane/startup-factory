@@ -1,0 +1,34 @@
+
+		</main>
+		<footer>
+			<div class="links">
+				<a href="/">Home</a>
+				{% if not userAccount %}
+				<a href="/signup">Create an account</a>
+				<a href="/login">Login</a>
+				{% else %}
+				<a href="/account">Account</a>
+				{% endif %}
+				<a href="/privacy">Privacy Policy</a>
+				<a href="/terms">Terms & Conditions</a>
+				<a href="/about">About</a>
+				<a href="/contact">Contact</a>
+			</div>
+			Copyright 2020 - _PROJECT_NAME_
+		</footer>
+		<form id="loginPopup" action="/login" method="POST" class="vertical">
+			<h1>Login</h1>
+			<h2></h2>
+			<input type="text" name="username" placeholder="Username or Email" />
+			<input type="password" name="password" placeholder="Password" />
+			<field class="horizontal">
+				<input type="reset" value="Cancel" class="shallow" />
+				<input type="submit" value="Login" />
+			</field>
+			<separator>OR</separator>
+			<field>
+				<a href="/signup" class="button">Create an Account</a>
+			</field>
+		</form>
+	</body>
+</html>

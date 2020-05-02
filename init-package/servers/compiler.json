@@ -1,0 +1,9 @@
+{
+	apps: [{
+		"name"			: "SCSS/JS Auto-compiler",
+		"script"		: "./app.js",
+		"instances"		: 1,
+		"exec_mode"		: "fork",
+		"watch"			: ["./", "../models/", "../helpers/", "../config/"]
+	}]
+}

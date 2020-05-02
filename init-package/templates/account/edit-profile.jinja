@@ -1,0 +1,45 @@
+<h1>Modify my profile</h1>
+<form action="/edit-profile" method="POST" class="edit-profile vertical">
+	<field>
+		<label>Profile picture</label>
+
+		<div id="profilePicture" name="profilePicture"></div>
+		<span class="upload-reset">Reset uploads</span>
+	</field>
+	<field>
+		<label>Bio <tooltip><span>maximum of 160 characters</span></tooltip></label>
+		<input type="text" name="bio" value="{{ userAccount.bio }}" maxlength="160" />
+	</field>
+	<field class="horizontal">
+		<label>Show my activity <tooltip><span>When enabled, your last activity date will be publically displayed on your profile.</span></tooltip></label>
+		<input type="checkbox" name="showActivity" {{ 'checked' | if(userAccount.showActivity) }} />
+	</field>
+	<field>
+		<input type="submit" value="Save profile" />
+	</field>
+</form>
+
+<script type="text/javascript">
+$(document).ready(async function() {
+
+	var originalPicture = {{ userAccount.profilePicture | json | safe }};
+
+	var profilePicture = await controller.setupUppy('#profilePicture', 'profilePicture', originalPicture);
+
+	$('#profilePicture + .upload-reset').on('click', function() {
+		profilePicture.reset();
+	});
+
+
+
+	var $form = $('form.edit-profile').on('submit', async (e) => {
+		e.preventDefault();
+		try {
+			await controller.apiPost('/edit-profile', $form);
+			await controller.delay(2000);
+			location.href = '/account';
+		} catch(e) {}
+	});
+
+});
+</script>
