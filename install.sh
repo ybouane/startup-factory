@@ -14,7 +14,7 @@ read repo
 
 
 
-if [[ $setupAll = 'y' ]]; then
+if [[ $setupAll == 'y' ]]; then
 	title "Installing Devleopment Tools"
 	sudo yum install -y make glibc-devel gcc gcc-c++ patch
 
@@ -55,7 +55,7 @@ mkdir $projectHandle
 cd $projectHandle
 
 git init
-if [[ ! $repo = '' ]]; then
+if [[ ! $repo == '' ]]; then
 	git remote add origin $repo
 	git pull
 fi

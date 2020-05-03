@@ -2,23 +2,27 @@ const H = require('upperh');
 const fs = require('fs');
 const config = require('../config/config');
 const mailgun = require('mailgun-js');
-const mg = mailgun({apiKey: config.mailgun.apiKey, domain: config.mailgun.domain});
 
-const sendEmail = async (to, from, subject, html, text) => {
-	text = text || html;
-	return new Promise(function(resolve, reject) {
-		mg.messages().send({
-			from		: from,
-			to			: to,
-			subject		: subject,
-			html		: html,
-			text		: text,
-		}, function (error, body) {
-			if(error)
-				return reject(error);
-			resolve(body);
+var mg;
+var sendEmail = () => {console.error('Mailgun API KEY not configured.');};
+if(config.mailgun.apiKey) {
+	mg = mailgun({apiKey: config.mailgun.apiKey, domain: config.mailgun.domain});
+	sendEmail = async (to, from, subject, html, text) => {
+		text = text || html;
+		return new Promise(function(resolve, reject) {
+			mg.messages().send({
+				from		: from,
+				to			: to,
+				subject		: subject,
+				html		: html,
+				text		: text,
+			}, function (error, body) {
+				if(error)
+					return reject(error);
+				resolve(body);
+			});
 		});
-	});
+	};
 }
 
 

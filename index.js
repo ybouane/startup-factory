@@ -49,7 +49,7 @@ const cwd = process.cwd();
 			try {
 				files = (await H.exec('find '+projectHandle+'/ \'!\' -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +')).stdout.trim().split(/\r?\n/);
 			} catch(e){}
-			let s_ = new RegExp(toReplace, 'g');
+			let s_ = new RegExp(s, 'g');
 			for(let file of files) {
 				try {
 					let f = path.join(cwd, file);

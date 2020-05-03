@@ -20,7 +20,7 @@ pm2 save
 cd ../
 
 
-if [[ $setupAll = 'y' ]]; then
+if [[ $setupAll == 'y' ]]; then
 
 
 	sudo systemctl start mongod
@@ -35,9 +35,9 @@ fi
 
 
 
-echo -n "Setup automatic SSL certificates w/ Certbot ? (yes) "
+echo -n "Setup automatic SSL certificates w/ Certbot ? (no) "
 read installCertbot
-if [[ $installCertbot='' ||  $installCertbot='y' ||  $installCertbot='yes' ||  $installCertbot='Y' ||  $installCertbot='YES' ||  $installCertbot='Yes' ]]; then
+if [[ $installCertbot == '' ||  $installCertbot == 'y' ||  $installCertbot == 'yes' ||  $installCertbot == 'Y' ||  $installCertbot == 'YES' ||  $installCertbot == 'Yes' ]]; then
 	cd ../
 	# Install EPEL repo
 	curl -O http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
