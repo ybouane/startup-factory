@@ -1,25 +1,20 @@
+title() {
+	echo -e "\e[44m-------------------------------------\e[49m"
+	echo -e "\e[44m--- $1 ---\e[49m"
+	echo -e "\e[44m-------------------------------------\e[49m"
+}
+
 rootDir="$1"
 projectHandle="$2"
 dbPass="$3"
-
-echo $rootDir
-echo $projectHandle
-echo $dbPass
+setupAll="$y"
 
 echo -n "Git repo url: "
 read repo
 
-echo -n "Setup whole server [git, nginx, node, pm2, mongodb, node-gyp]? (yes) "
-read setupAll
 
 
-title() {
-#	clear
-	echo -e "\e[44m-------------------------------------"
-	echo -e "\e[44m--- $1 ---"
-	echo -e "\e[44m-------------------------------------\e[49m"
-}
-if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
+if [[ $setupAll = 'y' ]]; then
 	title "Installing Devleopment Tools"
 	sudo yum install -y make glibc-devel gcc gcc-c++ patch
 
@@ -35,7 +30,6 @@ if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES
 
 	title "Installing Nginx"
 	sudo amazon-linux-extras install nginx1 -y
-	sudo systemctl enable nginx # auto load when server boots
 
 	title "Installing PM2"
 	npm install pm2@latest -g
@@ -48,8 +42,6 @@ if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES
 
 	sudo yum install -y mongodb-org
 
-	sudo systemctl start mongod
-	sudo systemctl enable mongod
 
 	sudo mongo --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'readWrite', db: '$projectHandle' } ]})"
 
@@ -63,8 +55,10 @@ cd $projectHandle
 
 npm init
 git init
-git remote add origin $repo
-git pull
+if [[ ! $repo = '' ]]; then
+	git remote add origin $repo
+	git pull
+fi
 
 title "Installing npm dependencies"
 npm install aws-sdk cookie mailgun-js mongodb mongoose mongoose-unique-validator node-sass sharp upperh webpack --save
@@ -73,21 +67,3 @@ npm install aws-sdk cookie mailgun-js mongodb mongoose mongoose-unique-validator
 title "Copying package"
 
 cp -RTn $rootDir/init-package/ ./
-
-#find . "!" -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec sed -i '' s/_DOMAIN_/$domainName/g {} +
-#find . "!" -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec sed -i '' s/_PROJECT_NAME_/$projectName/g {} +
-
-
-
-title "Starting Servers via PM2"
-cd servers
-pm2 start *.json
-pm2 save
-cd ../
-
-
-
-if [[ $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
-	title "Starting NGINX"
-	sudo systemctl start nginx
-fi

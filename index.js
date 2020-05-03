@@ -21,22 +21,21 @@ const cwd = process.cwd();
 		var primaryColor = await H.input('Primary Color: (#3498db) ') || '#3498db';
 		var secondaryColor = await H.input('Primary Color: (#2c3e50) ') || '#2c3e50';
 
+		var setupAll = await H.input('Setup whole server [git, nginx, node, pm2, mongodb, node-gyp]? (yes) ') || 'y';
+		if(['y', 'yes'].includes(setupAll.toLowerCase()))
+			setupAll = 'y';
+		else
+			setupAll = 'n';
+
 		var dbPass = (H.uniqueToken()+H.uniqueToken()).substring(0, 24);
 
 		var installShell = path.join(__dirname, 'install.sh');
 		fs.chmodSync(installShell, 0o755);
 
-		cp.execFileSync('sh', [installShell, __dirname, projectHandle, dbPass], {
+		cp.execFileSync('sh', [installShell, __dirname, projectHandle, dbPass, setupAll], {
 			cwd		: cwd,
 			stdio	: 'inherit',
-			//shell	: true,
 		});
-		// TODO: Create mongodb user
-		/*db.createUser({
-			user: "new_user",
-			pwd: "some_password",
-			roles: [ { role: "readWrite", db: "new_database" } ]
-		});*/
 
 		var toReplace = {
 			_PUBLIC_FOLDER_ 	: path.join(cwd, projectHandle, 'public'),
@@ -47,7 +46,7 @@ const cwd = process.cwd();
 			_SECONDARY_COLOR_	: secondaryColor,
 		};
 		for(let s in toReplace) {
-			let files = await H.exec('find '+projectHandle+'/ "!" -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +');
+			let files = (await H.exec('find '+projectHandle+'/ "!" -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +')).split(/\r?\n/);
 			let s_ = new RegExp(toReplace, 'g');
 			for(let file of files) {
 				let f = path.join(cwd, projectHandle, file);
@@ -55,7 +54,13 @@ const cwd = process.cwd();
 			}
 		}
 
-		// TODO open and replace content of each file with appropriate values
+		var postinstallShell = path.join(__dirname, 'post-install.sh');
+		fs.chmodSync(postinstallShell, 0o755);
+
+		cp.execFileSync('sh', [postinstallShell, __dirname, projectHandle, dbPass, setupAll], {
+			cwd		: cwd,
+			stdio	: 'inherit',
+		});
 
 	} catch(e) {
 		console.error(e);
