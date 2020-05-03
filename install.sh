@@ -53,12 +53,14 @@ fi
 mkdir $projectHandle
 cd $projectHandle
 
-npm init
 git init
 if [[ ! $repo = '' ]]; then
 	git remote add origin $repo
 	git pull
 fi
+
+title "NPM init"
+npm init
 
 title "Installing npm dependencies"
 npm install aws-sdk cookie mailgun-js mongodb mongoose mongoose-unique-validator node-sass sharp upperh webpack --save
