@@ -41,6 +41,8 @@ const cwd = process.cwd();
 			_DOMAIN_			: domainName,
 			_PROJECT_NAME_		: projectName,
 			_PROJECT_HANDLE_	: projectHandle,
+			_DB_NAME_			: projectHandle,
+			_DB_PASS_			: dbPass,
 			_PRIMARY_COLOR_		: primaryColor,
 			_SECONDARY_COLOR_	: secondaryColor,
 		};
