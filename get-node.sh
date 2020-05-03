@@ -7,5 +7,3 @@ title "Installing NodeJS + NPM"
 nvm install node
 
 source ~/.bashrc
-
-npx startup-factory

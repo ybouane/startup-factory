@@ -6,6 +6,7 @@ const cp = require('child_process');
 const cwd = process.cwd();
 
 (async () => {
+	console.log('A');
 	var projectName = await H.input('Project Name: (My App) ') || 'My App';
 	projectName = projectName.replace(/[\'\"\\]/g, ''); // Sorry, not allowed
 
@@ -21,7 +22,7 @@ const cwd = process.cwd();
 	var dbPass = (H.uniqueToken()+H.uniqueToken()).substring(0, 24);
 
 
-	cp.execFileSync(path.join(__dirname, 'install.sh'), __dirname, projectHandle, dbPass, {
+	cp.execFileSync(path.join(__dirname, 'install.sh'), [__dirname, projectHandle, dbPass], {
 		cwd		: cwd,
 		stdio	: 'inherit',
 	});
