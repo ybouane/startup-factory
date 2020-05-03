@@ -15,9 +15,9 @@ read setupAll
 
 title() {
 #	clear
-	echo "-------------------------------------"
-	echo "$1"
-	echo "-------------------------------------"
+	echo -e "\e[44m-------------------------------------"
+	echo -e "\e[44m--- $1 ---"
+	echo -e "\e[44m-------------------------------------"
 }
 if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
 	title "Installing Devleopment Tools"
@@ -34,7 +34,7 @@ if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES
 	npm install -g node-gyp
 
 	title "Installing Nginx"
-	sudo yum install -y nginx
+	sudo amazon-linux-extras install nginx1
 	sudo systemctl enable nginx # auto load when server boots
 
 	title "Installing PM2"
@@ -44,7 +44,7 @@ if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES
 
 
 	title "Installing MongoDb"
-	cp $1/mongodb.repo /etc/yum.repos.d/mongodb-org-4.2.repo
+	sudo cp $1/mongodb.repo /etc/yum.repos.d/mongodb-org-4.2.repo
 
 	sudo yum install -y mongodb-org
 
