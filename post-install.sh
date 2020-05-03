@@ -19,6 +19,9 @@ pm2 start *.json
 pm2 save
 cd ../
 
+# Trigger a re-compilation of js/scss files
+touch public/js/main.max.js
+touch public/css/style.scss
 
 if [[ $setupAll == 'y' ]]; then
 
