@@ -25,10 +25,11 @@ const cwd = process.cwd();
 
 		var installShell = path.join(__dirname, 'install.sh');
 		fs.chmodSync(installShell, 0o755);
-		
+
 		cp.execFileSync(installShell, [__dirname, projectHandle, dbPass], {
 			cwd		: cwd,
 			stdio	: 'inherit',
+			shell	: true,
 		});
 		// TODO: Create mongodb user
 		/*db.createUser({
