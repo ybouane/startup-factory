@@ -680,12 +680,13 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 
 }, {
 	beforeHandler	: async (req, res) => {
-		res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
 		res.setHeader('Content-Type', 'text/html, charset=utf-8');
 		res.setHeader('X-XSS-Protection', '1; mode=block');
 		res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
 		res.setHeader('X-Content-Type-Options', 'nosniff');
-		res.setHeader('Content-Security-Policy', 'block-all-mixed-content; frame-ancestors *; upgrade-insecure-requests; base-uri \'self\'; form-action \'self\'');
+		 // Uncomment if you have Https enabled
+		//res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
+		//res.setHeader('Content-Security-Policy', 'block-all-mixed-content; frame-ancestors *; upgrade-insecure-requests; base-uri \'self\'; form-action \'self\'');
 	},
 	onError			: async (err, req, res) => {
 		console.error(err);
