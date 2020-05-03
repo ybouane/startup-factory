@@ -31,6 +31,7 @@ if [[ "$setupAll" == 'y' ]]; then
 
 	title "Installing Nginx"
 	sudo amazon-linux-extras install nginx1 -y
+	sudo sed -i 's/user nginx\;/user ec2-user\;/' /etc/nginx/nginx.conf # Update nginx config to use ec2-user as the user
 
 	title "Installing PM2"
 	npm install pm2@latest -g
