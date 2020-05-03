@@ -2,7 +2,7 @@
 Another NodeJS framework.
 
 It aims to be a **SUPER** quick way to spin off a boilerplate web platform.
-In literally minutes, it installs the tech stack and will save you
+In literally minutes, it installs the tech stack and will save you days of work.
 
 When installed, it integrates:
 - A boilerplate web app
