@@ -26,6 +26,7 @@ if [[ $setupAll = 'y' ]]; then
 
 	source ~/.bashrc
 
+	title "Installing Node-gyp"
 	npm install -g node-gyp
 
 	title "Installing Nginx"

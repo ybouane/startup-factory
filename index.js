@@ -49,7 +49,7 @@ const cwd = process.cwd();
 			let s_ = new RegExp(toReplace, 'g');
 			for(let file of files) {
 				let f = path.join(cwd, projectHandle, file);
-				await H.writeFile(f, await H.readFile(f).replace(s_, toReplace[s]))
+				await H.writeFile(f, (await H.readFile(f)).replace(s_, toReplace[s]))
 			}
 		}
 
