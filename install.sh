@@ -2,6 +2,9 @@ rootDir="$1"
 projectHandle="$2"
 dbPass="$3"
 
+echo $rootDir
+echo $projectHandle
+echo $dbPass
 
 echo -n "Git repo url: "
 read repo
@@ -16,7 +19,7 @@ title() {
 	echo "$1"
 	echo "-------------------------------------"
 }
-if [[ $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
+if [[ $setupAll = '' || $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
 	title "Installing Devleopment Tools"
 	sudo yum install -y make glibc-devel gcc gcc-c++ patch
 
