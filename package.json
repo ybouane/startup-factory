@@ -1,6 +1,6 @@
 {
   "name": "startup-factory",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "description": "Setup a web platform environment with boilerplate code. Includes: template engine, signup/registration system, job/tasks server, nginx configuration, automatic sass compiler/js minifier, S3 uploader...",
   "main": "index.js",
   "bin": {

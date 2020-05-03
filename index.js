@@ -2,12 +2,13 @@
 'use strict';
 const H = require('upperh');
 const path = require('path');
+const fs = require('fs');
 const cp = require('child_process');
 const cwd = process.cwd();
 
 (async () => {
 	try {
-		console.log('A');
+		console.log('B');
 		var projectName = await H.input('Project Name: (My App) ') || 'My App';
 		projectName = projectName.replace(/[\'\"\\]/g, ''); // Sorry, not allowed
 
@@ -24,6 +25,7 @@ const cwd = process.cwd();
 
 		var installShell = path.join(__dirname, 'install.sh');
 		fs.chmodSync(installShell, 0o755);
+		
 		cp.execFileSync(installShell, [__dirname, projectHandle, dbPass], {
 			cwd		: cwd,
 			stdio	: 'inherit',
