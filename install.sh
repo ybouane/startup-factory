@@ -17,21 +17,21 @@ title() {
 }
 if [[ $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
 	title "Installing Devleopment Tools"
-	yum install -y make glibc-devel gcc gcc-c++ patch
+	sudo yum install -y make glibc-devel gcc gcc-c++ patch
 
 	title "Installing Git"
-	yum install -y git
+	sudo yum install -y git
 
 	title "Updating packages"
-	yum update -y
+	sudo yum update -y
 
 	source ~/.bashrc
 
 	npm install -g node-gyp
 
 	title "Installing Nginx"
-	yum install -y nginx
-	systemctl enable nginx # auto load when server boots
+	sudo yum install -y nginx
+	sudo systemctl enable nginx # auto load when server boots
 
 	title "Installing PM2"
 	npm install pm2@latest -g
@@ -42,15 +42,15 @@ if [[ $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = '
 	title "Installing MongoDb"
 	cp $1/mongodb.repo /etc/yum.repos.d/mongodb-org-4.2.repo
 
-	yum install -y mongodb-org
+	sudo yum install -y mongodb-org
 
-	systemctl start mongod
-	systemctl enable mongod
+	sudo systemctl start mongod
+	sudo systemctl enable mongod
 
-	mongo --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'readWrite', db: '$projectHandle' } ]})"
+	sudo mongo --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'readWrite', db: '$projectHandle' } ]})"
 
 	# Disable access to EC2 meta-data service for non-root users:
-	iptables -A OUTPUT -m owner ! --uid-owner root -d 169.254.169.254 -j DROP
+	sudo iptables -A OUTPUT -m owner ! --uid-owner root -d 169.254.169.254 -j DROP
 fi
 
 
@@ -85,5 +85,5 @@ cd ../
 
 if [[ $setupAll = 'y' || $setupAll = 'yes' || $setupAll = 'YES' || $setupAll = 'Y' ]]; then
 	title "Starting NGINX"
-	systemctl start nginx
+	sudo systemctl start nginx
 fi
