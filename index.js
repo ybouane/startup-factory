@@ -45,12 +45,15 @@ const cwd = process.cwd();
 			_SECONDARY_COLOR_	: secondaryColor,
 		};
 		for(let s in toReplace) {
-			let files = (await H.exec('find '+projectHandle+'/ \'!\' -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +')).stdout.split(/\r?\n/);
-			console.log(files);
+			let files = (await H.exec('find '+projectHandle+'/ \'!\' -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +')).stdout.trim().split(/\r?\n/);
 			let s_ = new RegExp(toReplace, 'g');
 			for(let file of files) {
-				let f = path.join(cwd, file);
-				await H.writeFile(f, (await H.readFile(f)).replace(s_, toReplace[s]))
+				try {
+					let f = path.join(cwd, file);
+					await H.writeFile(f, (await H.readFile(f)).replace(s_, toReplace[s]))
+				} catch(e) {
+					console.error('Failed at replacing "'+s+'" in file "'+s+'"');
+				}
 			}
 		}
 
