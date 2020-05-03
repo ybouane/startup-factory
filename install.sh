@@ -70,3 +70,5 @@ npm install aws-sdk cookie mailgun-js mongodb mongoose mongoose-unique-validator
 title "Copying package"
 
 cp -RTn $rootDir/init-package/ ./
+
+title "Replacing placeholders in Package template"
