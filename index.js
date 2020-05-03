@@ -8,7 +8,7 @@ const cwd = process.cwd();
 
 (async () => {
 	try {
-		console.log('D');
+		console.log('E');
 		var projectName = await H.input('Project Name: (My App) ') || 'My App';
 		projectName = projectName.replace(/[\'\"\\]/g, ''); // Sorry, not allowed
 
@@ -26,10 +26,10 @@ const cwd = process.cwd();
 		var installShell = path.join(__dirname, 'install.sh');
 		fs.chmodSync(installShell, 0o755);
 
-		cp.execFileSync(installShell, [__dirname, projectHandle, dbPass], {
+		cp.execFileSync('sh', [installShell, __dirname, projectHandle, dbPass], {
 			cwd		: cwd,
 			stdio	: 'inherit',
-			shell	: true,
+			//shell	: true,
 		});
 		// TODO: Create mongodb user
 		/*db.createUser({
