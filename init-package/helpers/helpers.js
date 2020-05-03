@@ -86,7 +86,8 @@ const dftFilters = {
 		}
 		fs.stat(__dirname+'/../public/'+path, (err, stat)=>{
 			if(err)
-				cb(err.toString());
+				cb(undefined, path);
+				//cb(err.toString());
 			else
 				cb(undefined, path+'?'+stat.mtime.getTime().toString(36));
 		});
