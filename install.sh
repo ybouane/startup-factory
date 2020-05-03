@@ -14,7 +14,7 @@ read repo
 
 
 
-if [[ $setupAll == 'y' ]]; then
+if [[ "$setupAll" == 'y' ]]; then
 	title "Installing Devleopment Tools"
 	sudo yum install -y make glibc-devel gcc gcc-c++ patch
 
@@ -42,9 +42,15 @@ if [[ $setupAll == 'y' ]]; then
 	sudo cp $1/mongodb.repo /etc/yum.repos.d/mongodb-org-4.2.repo
 
 	sudo yum install -y mongodb-org
+	sudo systemctl start mongod
+	# Add Mongodb user
+	sudo mongo $projectHandle --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'readWrite', db: '$projectHandle' } ]})"
+	sudo systemctl stop mongod
+	# Enable authentication in config
+	sudo sed -i 's/\#security\:/security:\n  authorization: "enabled"/' /etc/mongod.conf
+	sudo systemctl start mongod
+	sudo systemctl enable mongod
 
-
-	sudo mongo --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'readWrite', db: '$projectHandle' } ]})"
 
 	# Disable access to EC2 meta-data service for non-root users:
 	sudo iptables -A OUTPUT -m owner ! --uid-owner root -d 169.254.169.254 -j DROP
@@ -55,7 +61,7 @@ mkdir $projectHandle
 cd $projectHandle
 
 git init
-if [[ ! $repo == '' ]]; then
+if [[ ! -z "$repo" ]]; then
 	git remote add origin $repo
 	git pull
 fi

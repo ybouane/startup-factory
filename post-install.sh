@@ -23,10 +23,6 @@ cd ../
 if [[ $setupAll == 'y' ]]; then
 
 
-	sudo systemctl start mongod
-	sudo systemctl enable mongod
-
-
 	sudo ln config/nginx.conf /etc/nginx/conf.d/$projectHandle.conf
 	title "Starting NGINX"
 	sudo systemctl start nginx
@@ -37,14 +33,14 @@ fi
 
 echo -n "Setup automatic SSL certificates w/ Certbot ? (no) "
 read installCertbot
-if [[ $installCertbot == '' ||  $installCertbot == 'y' ||  $installCertbot == 'yes' ||  $installCertbot == 'Y' ||  $installCertbot == 'YES' ||  $installCertbot == 'Yes' ]]; then
+if [[ -z "$installCertbot" || "$installCertbot" == 'y' || "$installCertbot" == 'yes' || "$installCertbot" == 'Y' || "$installCertbot" == 'YES' || "$installCertbot" == 'Yes' ]]; then
 	cd ../
 	# Install EPEL repo
 	curl -O http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 	sudo yum install epel-release-latest-7.noarch.rpm
 	rm epel-release-latest-7.noarch.rpm
-	yum -y install yum-utils
-	yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
+	sudo yum -y install yum-utils
+	sudo yum-config-manager --enable rhui-REGION-rhel-server-extras rhui-REGION-rhel-server-optional
 
 	# Install Certbot
 	sudo yum install certbot python2-certbot-nginx
