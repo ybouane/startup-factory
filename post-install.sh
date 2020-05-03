@@ -7,7 +7,7 @@ title() {
 rootDir="$1"
 projectHandle="$2"
 dbPass="$3"
-setupAll="$y"
+setupAll="$4"
 
 
 source ~/.bashrc

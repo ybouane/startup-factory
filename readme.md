@@ -20,11 +20,12 @@ When installed, it supports:
 If you launch it in a "blank" server, you first need to install NodeJS:
 ```
 sudo curl -o- https://raw.githubusercontent.com/ybouane/startup-factory/master/get-node.sh | bash
+source ~/.bashrc
 ```
 
 Once node is available you can use NPX to run the startup-factory installation script:
 ```
-sudo npx startup-factory my-app
+npx startup-factory
 ```
 
 This will create a my-app folder that will contain the boilerplate web app.

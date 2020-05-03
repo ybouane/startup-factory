@@ -8,7 +8,6 @@ const cwd = process.cwd();
 
 (async () => {
 	try {
-		console.log('E');
 		var projectName = await H.input('Project Name: (My App) ') || 'My App';
 		projectName = projectName.replace(/[\'\"\\]/g, ''); // Sorry, not allowed
 
