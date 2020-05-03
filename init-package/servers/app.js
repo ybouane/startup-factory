@@ -17,7 +17,7 @@ const {dftFilters, randomOrderId, sendEmail} = require('../helpers/helpers');
 
 
 // DB connection
-const siteDb = mongoose.createConnection('mongodb://localhost:27017/'+config.db.dbUrl, {
+const siteDb = mongoose.createConnection(config.db.dbUrl, {
 	user				: config.db.user,
 	pass				: config.db.pass,
 	useNewUrlParser		: true,
