@@ -2,6 +2,7 @@ rootDir="$1"
 projectHandle="$2"
 dbPass="$3"
 
+
 echo -n "Git repo url: "
 read repo
 
