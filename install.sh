@@ -44,7 +44,7 @@ if [[ "$setupAll" == 'y' ]]; then
 	sudo yum install -y mongodb-org
 	sudo systemctl start mongod
 	# Add Mongodb user
-	sudo mongo $projectHandle --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'readWrite', db: '$projectHandle' } ]})"
+	sudo mongo $projectHandle --eval "db.createUser({user: '$projectHandle',pwd: '$dbPass',roles: [ { role: 'dbAdmin', db: '$projectHandle' } ]})"
 	sudo systemctl stop mongod
 	# Enable authentication in config
 	sudo sed -i 's/\#security\:/security:\n  authorization: "enabled"/' /etc/mongod.conf
