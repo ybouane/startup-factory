@@ -45,7 +45,10 @@ const cwd = process.cwd();
 			_SECONDARY_COLOR_	: secondaryColor,
 		};
 		for(let s in toReplace) {
-			let files = (await H.exec('find '+projectHandle+'/ \'!\' -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +')).stdout.trim().split(/\r?\n/);
+			let files;
+			try {
+				files = (await H.exec('find '+projectHandle+'/ \'!\' -path "*node_modules*" -type f "(" -name "*.js" -o -name "*.conf" -o -name "*.scss" -o -name "*.jinja" -o -name "*.json" ")" -exec grep -l "'+s+'" {} +')).stdout.trim().split(/\r?\n/);
+			} catch(e){}
 			let s_ = new RegExp(toReplace, 'g');
 			for(let file of files) {
 				try {
