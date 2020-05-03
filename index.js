@@ -22,8 +22,9 @@ const cwd = process.cwd();
 
 		var dbPass = (H.uniqueToken()+H.uniqueToken()).substring(0, 24);
 
-
-		cp.execFileSync(path.join(__dirname, 'install.sh'), [__dirname, projectHandle, dbPass], {
+		var installShell = path.join(__dirname, 'install.sh');
+		fs.chmodSync(installShell, 0o755);
+		cp.execFileSync(installShell, [__dirname, projectHandle, dbPass], {
 			cwd		: cwd,
 			stdio	: 'inherit',
 		});
