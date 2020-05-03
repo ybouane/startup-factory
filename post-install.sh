@@ -20,7 +20,6 @@ pm2 save
 cd ../
 
 
-
 if [[ $setupAll = 'y' ]]; then
 
 
