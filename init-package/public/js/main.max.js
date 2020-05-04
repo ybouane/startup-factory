@@ -3,7 +3,7 @@ const _constants = require('../../config/safeConstants');
 window.dataLayer = window.dataLayer || [];
 window.gtag = function(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'UA-156065557-1');
+gtag('config', 'UA-XXXXXXX');
 
 
 class Controller {
@@ -354,7 +354,7 @@ class Controller {
 		}).on('reset', function() {
 			$('html').removeAttr('login-popup')
 		});
-		
+
 		$('mobile-nav .close').on('click', function() {
 			$('mobile-nav').removeClass('open');
 		});
