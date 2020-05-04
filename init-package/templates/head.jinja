@@ -17,7 +17,9 @@
 		<link rel="stylesheet" href="{{ '/css/style.css' | file_version }}" media="all" />
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"></script>
-		<script async type="text/javascript" src="//www.googletagmanager.com/gtag/js?id=UA-156065557-1"></script>
+		<!-- GOOGLE ANALYTICS:
+		<script async type="text/javascript" src="//www.googletagmanager.com/gtag/js?id=UA-XXXXXXX"></script>
+		-->
 		<script type="text/javascript" src="{{ '/js/main.js' | file_version }}"></script>
 		<script type="text/javascript">
 		controller.isLogged = {{ 'true' | if(userAccount, 'false') }};
