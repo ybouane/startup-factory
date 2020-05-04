@@ -13,7 +13,7 @@ const S3		= new AWS.S3({
 	signatureVersion	: 'v4',
 });
 
-const {dftFilters, randomOrderId, sendEmail} = require('../helpers/helpers');
+const {dftFilters, sendEmail} = require('../helpers/helpers');
 
 
 // DB connection
