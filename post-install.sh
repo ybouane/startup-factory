@@ -19,9 +19,6 @@ pm2 start *.json
 pm2 save
 cd ../
 
-# Trigger a re-compilation of js/scss files
-touch public/js/main.max.js
-touch public/css/style.scss
 
 if [[ $setupAll == 'y' ]]; then
 
@@ -55,3 +52,11 @@ if [[ -z "$installCertbot" || "$installCertbot" == 'y' || "$installCertbot" == '
 	echo "0 0,12 * * * root python -c 'import random; import time; time.sleep(random.random() * 3600)' && certbot renew -q" | sudo tee -a /etc/crontab > /dev/null
 
 fi
+
+
+# Trigger a re-compilation of js/scss files
+touch public/js/main.max.js
+touch public/css/style.scss
+
+title "Updating packages"
+sudo yum update -y
