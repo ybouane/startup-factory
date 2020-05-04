@@ -145,12 +145,13 @@ header {
 	min-height: 60px;
 	logo {
 		display: inline-block;
-		width: 300px;
 		img {
 			width:100%;
 			height:100%;
 			object-fit: contain;
 			object-position: center center;
+			max-height: 100px;
+			max-width: 300px;
 		}
 	}
 	nav {
