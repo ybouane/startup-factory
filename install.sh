@@ -71,7 +71,7 @@ title "NPM init"
 npm init
 
 title "Installing npm dependencies"
-npm install aws-sdk cookie mailgun-js mongodb mongoose mongoose-unique-validator node-sass sharp upperh webpack --save
+npm install aws-sdk cookie mailgun-js mongodb mongoose mongoose-unique-validator node-sass sharp markdown-it upperh webpack --save
 
 
 title "Copying package"
