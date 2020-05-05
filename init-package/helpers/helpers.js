@@ -7,7 +7,7 @@ var mg;
 var sendEmail = () => {console.error('Mailgun API KEY not configured.');};
 if(config.mailgun.apiKey) {
 	mg = mailgun({apiKey: config.mailgun.apiKey, domain: config.mailgun.domain});
-	sendEmail = async (to, from, subject, html, text) => {
+	sendEmail = async (to, from='_PROJECT_NAME_ <_EMAIL_ADDRESS_>', subject, html, text) => {
 		text = text || html;
 		return new Promise(function(resolve, reject) {
 			mg.messages().send({
