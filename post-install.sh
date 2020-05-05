@@ -58,5 +58,7 @@ fi
 touch public/js/main.max.js
 touch public/css/style.scss
 
+echo -e "\nconfig\/config.js">>.gitignore
+
 title "Updating packages"
 sudo yum update -y
