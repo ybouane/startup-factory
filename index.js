@@ -17,6 +17,8 @@ const cwd = process.cwd();
 		var domainName = await H.input('Domain Name: (localhost) ') || 'localhost';
 		domainName = domainName.toLowerCase().replace(/^https?:\/\//, '').replace(/[^a-z0-9_\.-]/g, ''); // Clean domain name value
 
+		var contactEmail = await H.input('Contact email address: ') || '';
+
 		var primaryColor = await H.input('Primary Color: (#3498db) ') || '#3498db';
 		var secondaryColor = await H.input('Primary Color: (#2c3e50) ') || '#2c3e50';
 
@@ -41,6 +43,7 @@ const cwd = process.cwd();
 			_DOMAIN_			: domainName,
 			_PROJECT_NAME_		: projectName,
 			_PROJECT_HANDLE_	: projectHandle,
+			_EMAIL_ADDRESS_		: contactEmail,
 			_DB_NAME_			: projectHandle,
 			_DB_PASS_			: dbPass,
 			_PRIMARY_COLOR_		: primaryColor,
