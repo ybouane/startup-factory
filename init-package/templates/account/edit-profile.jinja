@@ -14,10 +14,6 @@
 		<label>Bio <tooltip><span>maximum of 160 characters</span></tooltip></label>
 		<input type="text" name="bio" value="{{ userAccount.bio }}" maxlength="160" />
 	</field>
-	<field class="horizontal">
-		<label>Show my activity <tooltip><span>When enabled, your last activity date will be publically displayed on your profile.</span></tooltip></label>
-		<input type="checkbox" name="showActivity" {{ 'checked' | if(userAccount.showActivity) }} />
-	</field>
 	<field>
 		<input type="submit" value="Save profile" />
 	</field>
