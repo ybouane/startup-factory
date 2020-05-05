@@ -15,8 +15,6 @@
 		{% if meta.image %}<meta property="og:image" content="{{ meta.image | asset_url(200) }}" />{% endif %}
 
 		<link rel="stylesheet" href="{{ '/css/style.css' | file_version }}" media="all" />
-		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"></script>
 		<!-- GOOGLE ANALYTICS:
 		<script async type="text/javascript" src="//www.googletagmanager.com/gtag/js?id=UA-XXXXXXX"></script>
 		-->
@@ -36,7 +34,7 @@
 			<nav>
 				<a href="/about">About</a>
 				{% if userAccount %}
-				<a href="/account">Hello {{ userAccount.username }}!</a>
+				<a href="/account">Hello {{ userAccount.name }}!</a>
 				<a href="/logout">Logout</a>
 				{% else %}
 				<a href="/signup">Sign Up</a>
@@ -49,7 +47,7 @@
 			<a href="/">Home</a>
 			<a href="/about">About</a>
 			{% if userAccount %}
-			<a href="/account">Hello {{ userAccount.username }}!</a>
+			<a href="/account">Hello {{ userAccount.name }}!</a>
 			<a href="/logout">Logout</a>
 			{% else %}
 			<a href="/signup">Sign Up</a>

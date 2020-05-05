@@ -170,11 +170,9 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				session.stripeStateToken = H.uniqueToken();
 				session.stripeStateTokenCreationDate = Date.now();
 				session.save();
-			}*/
-			await userAccount.populate('boughtCandies').execPopulate();
-			await userAccount.populate('boughtCandies.categories boughtCandies.author boughtCandies.thumbnail boughtCandies.latest').execPopulate();
+			}
 			var paymentsData = {};
-			/*if(userAccount.canAcceptPayments) {
+			if(userAccount.canAcceptPayments) {
 				paymentsData = {
 					loginLink 		: (await stripe.accounts.createLoginLink(userAccount.stripeAccount.stripe_user_id)).url,
 					balance			: 0,
@@ -201,20 +199,12 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				};
 			}*/
 
-			var candies =  await Candy.find({
-				status	: ['submitted', 'failed', 'published', 'rejected'],
-				author	: userAccount._id,
-			}).populate('categories author thumbnail latest latestVersion').populate({
-				path: 'latestVersion',
-				populate: {path: 'processingJob'}
-			});
+
 			res.end(await renderPage('../templates/account/account.jinja', {
 				...dftData,
 				page		: 'account',
-				title		: userAccount.username+' - My Account - _PROJECT_NAME_',
-				candies		: candies,
-				requireInvitation	: config.requireInvitation,
-				...paymentsData,
+				title		: userAccount.name+' - My Account - _PROJECT_NAME_',
+				//...paymentsData,
 			}));
 		},
 		/*'/stripeOAuth'					: async (req, res, urlMatches, method, data) => {
@@ -241,19 +231,6 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 
 			return res.writeHead(302, {'Location': '/account'});
 		},*/
-		'^/user/([a-z0-9_-]+)'			: async (req, res, urlMatches, method, data) => {
-			var user = await Account.findOne({
-				username	: urlMatches[1],
-			}).populate('profilePicture');
-			if(!user)
-				throw new H.Error('Could not find this user in our database.', 404);
-			res.end(await renderPage('../templates/pages/user.jinja', {
-				...dftData,
-				page		: 'user',
-				title		: user.username+' - Profile Page - _PROJECT_NAME_',
-				user		: user
-			}));
-		},
 		'/edit-profile'					: async (req, res, urlMatches, method, data) => {
 			if(!userAccount)
 				return res.writeHead(302, {'Location': '/login'});
@@ -265,8 +242,6 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 						userAccount.profilePicture = (data.profilePicture && await Upload.findOne({ status: 'uploaded', uploadKey:String(data.profilePicture) }, '_id')) || undefined;
 						userAccount.profilePicture = userAccount.profilePicture && userAccount.profilePicture._id;
 					}
-					if(data.showActivity != undefined)
-						userAccount.showActivity = !!data.showActivity;
 					await userAccount.save();
 					res.json({success:true, message:'Profile successfully modified. Redirecting...'});
 				} catch(e) {
@@ -278,7 +253,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				res.end(await renderPage('../templates/account/edit-profile.jinja', {
 					...dftData,
 					page		: 'edit-profile',
-					title		: userAccount.username+' - Modify my profile - _PROJECT_NAME_',
+					title		: userAccount.name+' - Modify my profile - _PROJECT_NAME_',
 				}));
 			}
 		},
@@ -534,14 +509,10 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 			if(userAccount)
 				return res.writeHead(302, {'Location': '/account'});
 			if(method=='POST') {
-				var account;
-				if(data.username.match(H.regexp.email))
-					account = await Account.findOne({ email: data.username });
-				else
-					account = await Account.findOne({ username: data.username });
+				var account = await Account.findOne({ email: data.email });
 
 				if(!account)
-					throw new H.Error('Could not find the account with the specified username/email.');
+					throw new H.Error('Could not find the account with the specified email.');
 
 				if(H.sha1(account.passSalt+data.password)==account.passHash) {
 					userAccount = account;
@@ -549,7 +520,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 					session.save();
 					return res.json({success:true, message: 'Successfully logged in. Redirecting...'});
 				} else
-					throw new H.Error('Invalid username/password combination.');
+					throw new H.Error('Invalid email/password combination.');
 			} else {
 				res.end(await renderPage('../templates/account/login.jinja', {
 					...dftData,
@@ -574,9 +545,9 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				var account = await Account.findOne({ email: data.email });
 				if(account)
 					throw new H.Error('An account is already using this email address.');
-				account = await Account.findOne({ username: data.username });
+				account = await Account.findOne({ email: data.email });
 				if(account)
-					throw new H.Error('An account is already using this username.');
+					throw new H.Error('An account is already using this email.');
 
 				var verificationCode = String(Math.round(Math.random()*1000000)).padStart(6, '0');
 				session.emailVerificationCode = {
@@ -618,7 +589,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 
 				var salt = H.uniqueToken();
 				var account = new Account({
-					username					: data.username,
+					name						: data.name,
 					email						: data.email,
 					confirmedEmail				: false,
 					emailConfirmationToken		: H.uniqueToken(),
@@ -632,8 +603,6 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 					session.userId = account._id; // Login user
 					await session.save();
 					res.json({success:true, message:'Account successfully created. Redirecting...', id:account._id});
-					invitationCode.usage++;
-					await invitationCode.save();
 				} catch(e) {
 					console.error(e);
 					if(e instanceof Error && e.name=='ValidationError') {

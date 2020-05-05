@@ -1,6 +1,6 @@
-<h1>Hello {{ userAccount.username }}</h1>
+<h1>Hello {{ userAccount.name }}</h1>
 <a href="/edit-profile" class="my-profile">
-	<img src="{{ userAccount.profilePicture | asset_url }}" alt="{{ userAccount.username }}" />
+	<img src="{{ userAccount.profilePicture | asset_url }}" alt="{{ userAccount.name }}" />
 	<em>{{ userAccount.bio }}</em>
 </a>
 

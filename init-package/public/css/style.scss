@@ -98,7 +98,6 @@ html {
 		@extend %loader;
 
 		transition:opacity $regularSpeed;
-		box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
 		border-radius: 60px;
 	}
 	&[login-popup]{
@@ -273,7 +272,7 @@ footer {
 	background:url(/images/loader.svg) center center;
 	background-repeat: no-repeat;
 	background-size: contain;
-	animation:loader-rotate 3s infinite linear;
+	animation:loader-rotate 1s infinite cubic-bezier(0.3, 0.15, 0.70, 0.85);
 	transform:rotate(0deg);
 }
 
@@ -1025,16 +1024,11 @@ body {
 		&:hover {
 			background: #FFFFFF;
 		}
-		>a {
-			flex:1 1 auto;
-			margin-right: 10px;
+		>span {
+			flex:1 1 50%;
 		}
-		>em {
-			flex:0 0;
-			text-transform: uppercase;
-			font-style: normal;
-			font-weight: bold;
-			white-space: nowrap;
+		>a {
+			flex:1 1 50%;
 		}
 	}
 }
@@ -1046,4 +1040,4 @@ body {
 
 /* Global animations*/
 
-@keyframes loader-rotate {0%{transform:rotate(0deg);}100%{transform:rotate(-360deg);}}
+@keyframes loader-rotate {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}

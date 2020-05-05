@@ -1,21 +1,21 @@
 <h1>Login</h1>
 <form action="/login" method="POST" class="login vertical">
-	<input type="text" name="username" placeholder="Username or Email" />
+	<input type="text" name="email" placeholder="Email" />
 	<input type="password" name="password" placeholder="Password" />
 	<input type="submit" value="Login" />
 	<a href="/signup">Create an Account</a>
 </form>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	var $form = $('form.login').on('submit', async (e) => {
+H(function() {
+	var $form = H('form.login').on('submit', async (e) => {
 		e.preventDefault();
 		try {
 			await controller.apiPost('/login', $form);
 			gtag('event', 'login');
-			await controller.delay(2000);
+			await H.delay(2000);
 			location.href = '/';
-		} catch(e) {}
+		} catch(e) {console.error(e);}
 	});
 });
 </script>

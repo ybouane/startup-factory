@@ -1,6 +1,0 @@
-<div class="profile">
-	<img src="{{ user.profilePicture | asset_url }}" alt="{{ user.username }}" />
-	<h1>{{ user.username }}'s profile</h1>
-	{% if user.showActivity %}<span title="Last activity">{{ user.lastActive | relative_time }}</span>{% endif %}
-	<em>{{ user.bio }}</em>
-</div>

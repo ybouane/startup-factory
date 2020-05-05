@@ -7,6 +7,10 @@
 		<span class="upload-reset">Reset uploads</span>
 	</field>
 	<field>
+		<label>Full Name</label>
+		<input type="text" name="name" value="{{ userAccount.name }}" maxlength="160" />
+	</field>
+	<field>
 		<label>Bio <tooltip><span>maximum of 160 characters</span></tooltip></label>
 		<input type="text" name="bio" value="{{ userAccount.bio }}" maxlength="160" />
 	</field>
@@ -20,19 +24,19 @@
 </form>
 
 <script type="text/javascript">
-$(document).ready(async function() {
+H(async function() {
 
 	var originalPicture = {{ userAccount.profilePicture | json | safe }};
 
 	var profilePicture = await controller.setupUppy('#profilePicture', 'profilePicture', originalPicture);
 
-	$('#profilePicture + .upload-reset').on('click', function() {
+	H('#profilePicture + .upload-reset').on('click', function() {
 		profilePicture.reset();
 	});
 
 
 
-	var $form = $('form.edit-profile').on('submit', async (e) => {
+	var $form = H('form.edit-profile').on('submit', async (e) => {
 		e.preventDefault();
 		try {
 			await controller.apiPost('/edit-profile', $form);

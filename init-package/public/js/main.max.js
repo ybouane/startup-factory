@@ -1,9 +1,14 @@
+const H = require('upperh');
+const MarkdownIt = require('markdown-it');
 const _constants = require('../../config/safeConstants');
+
+window.H = H;
 
 window.dataLayer = window.dataLayer || [];
 window.gtag = function(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'UA-XXXXXXX');
+gtag('config', 'UA-XXXXX');
+
 
 
 class Controller {
@@ -14,42 +19,28 @@ class Controller {
 		return _constants;
 	}
 
-	escape(str) {
-		return String(str)
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;")
-		.replace(/'/g, "&#039;");
-	}
-	delay(time) {
-		return new Promise(function(resolve, reject) {setTimeout(resolve, time);});
-	}
-	hasOwnProp(obj, k) {
-		return Object.prototype.hasOwnProperty.call(obj, k);
-	}
 	setLoader(loading) {
 		if(loading)
-			$('html').attr('is-loading', '');
+			H('html').attr('is-loading', '');
 		else
-			$('html').removeAttr('is-loading');
+			H('html').removeAttr('is-loading');
 	}
 
 	openLoginForm(message) {
-		$('#loginPopup').find('h2').text(message);
-		$('html').attr('login-popup', '')
+		H('#loginPopup').find('h2').text(message);
+		H('html').attr('login-popup', '')
 	}
 
 	openDialog(html, buttons, callback, extraClasses='') {
 		// TODO implement btn.cancel (ESC button) & danger button
-		var $dialog = $(
-			`<dialog class="${this.escape(extraClasses)}">
+		var $dialog = H(
+			`<dialog class="${H.escape(extraClasses)}">
 				<form method="dialog">
 					<div class="dialog-content">${html}</div>
 					<menu>
 						${buttons.map(
 							btn => {
-								return '<button value="'+this.escape(btn.value)+'" '+(btn.default?'type="submit"':'type="button"')+' class="'+(btn.shallow?'shallow':'')+' '+(btn.critical?'critical':'')+'">'+this.escape(btn.text)+'</button>';
+								return '<button value="'+H.escape(btn.value)+'" '+(btn.default?'type="submit"':'type="button"')+' class="'+(btn.shallow?'shallow':'')+' '+(btn.critical?'critical':'')+'">'+H.escape(btn.text)+'</button>';
 							}
 						).join('')}
 					</menu>
@@ -58,15 +49,15 @@ class Controller {
 		).appendTo(document.body);
 		var close = () => {
 			$dialog.remove();
-			$('html').removeAttr('dialog-open');
+			H('html').removeAttr('dialog-open');
 		};
 		$dialog.on('click', 'menu>button', function(e) {
-			callback($(e.target).attr('value'), close);
+			callback(H(e.target).attr('value'), close);
 		}).attr('open', '').find('form').on('submit', function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 		});
-		$('html').attr('dialog-open', '');
+		H('html').attr('dialog-open', '');
 
 		return $dialog;
 	}
@@ -82,10 +73,10 @@ class Controller {
 				if(!Array.isArray(v))
 					continue;
 				$f.find('radio').each(function(){
-					if(v.includes($(this).attr('data-value')))
-						$(this).attr('data-selected', '');
+					if(v.includes(H(this).attr('data-value')))
+						H(this).attr('data-selected', '');
 				});
-			} else if($f.is(':input')) {
+			} else if($f.is('input, select, textarea')) {
 				$f.val(v);
 			}
 		}
@@ -93,7 +84,7 @@ class Controller {
 	serializeForm($ele) {
 		var formObj = {};
 		$ele.find('[name]').each(function() {
-			var $this = $(this);
+			var $this = H(this);
 			if(!$this.attr('name'))
 				return;
 			if($this.is('input[type="checkbox"]')) {
@@ -109,8 +100,8 @@ class Controller {
 				else
 					formObj[$this.attr('name')] = files[0] && files[0].s3Multipart && files[0].s3Multipart.key;
 			} else if($this.is('radios')) {
-				formObj[$this.attr('name')] = $this.find('radio[data-selected]').map(function(){return $(this).attr('data-value')}).get();
-			} else if($this.is(':input')) {
+				formObj[$this.attr('name')] = $this.find('radio[data-selected]').map(function(){return H(this).attr('data-value')}).get();
+			} else if($this.is('input, select, textarea')) {
 				formObj[$this.attr('name')] = $this.val();
 			}
 		});
@@ -147,10 +138,10 @@ class Controller {
 		return await this.showMessage(message, 'info', duration);
 	}
 	async showMessage(message, type='info', duration=4000) {
-		var $msg = $('<div data-type="'+this.escape(type)+'">'+this.escape(message).replace(/\r?\n/g, '<br />')+'</div>').appendTo('info-messages');
-		await this.delay(duration);
+		var $msg = H('<div data-type="'+H.escape(type)+'">'+H.escape(message).replace(/\r?\n/g, '<br />')+'</div>').appendTo('info-messages');
+		await H.delay(duration);
 		$msg.addClass('hidden');
-		await this.delay(1000);
+		await H.delay(1000);
 		$msg.remove();
 	}
 
@@ -172,7 +163,7 @@ class Controller {
 					allowMultipleUploads	: opts.allowMultipleUploads,
 					...(opts.onBeforeFileAdded?{onBeforeFileAdded : opts.onBeforeFileAdded}:{}),
 				});
-				$(target).attr('is-uploader', '').on('getUppy', function() {
+				H(target).attr('is-uploader', '').on('getUppy', function() {
 					return uppyObj;
 				});
 				uppyObj.use(Uppy.Dashboard/*DragDrop*/, {
@@ -188,11 +179,11 @@ class Controller {
 
 
 				for(let f of preloadFiles) {
-					let preview = 'https://_DOMAIN_/images/fileIcons/unknown.svg';
+					let preview = 'https://ticket19.com/images/fileIcons/unknown.svg';
 					if(f.public && ['jpg', 'jpeg', 'png', 'gif'].includes(f.format))
 						preview = 'https://'+f.bucket+'.s3.amazonaws.com/'+f.uploadKey;
 					/*else if (['csv', 'jpeg', 'jpg', 'json', 'mp4', 'png', 'txt', 'xls', 'xlsx', 'xml', 'zip'].includes(f.format))
-						preview = 'https://_DOMAIN_/images/fileIcons/'+f.format+'.svg';*/
+						preview = 'https://ticket19.com/images/fileIcons/'+f.format+'.svg';*/
 
 					uppyObj.addFile({
 						name		: f.originalName, // file name
@@ -217,8 +208,8 @@ class Controller {
 				});
 				resolve(uppyObj);
 			};
-			if($('#uppyScript').length==0) {
-				$('head').append('<link href="https://transloadit.edgly.net/releases/uppy/v1.10.1/uppy.min.css" rel="stylesheet">');
+			if(H('#uppyScript').length==0) {
+				H('head').append('<link href="https://transloadit.edgly.net/releases/uppy/v1.10.1/uppy.min.css" rel="stylesheet">');
 				var scr = document.createElement('script');
 				scr.onload = cb;
 				scr.src = 'https://transloadit.edgly.net/releases/uppy/v1.10.1/uppy.min.js';
@@ -246,52 +237,26 @@ class Controller {
 		try {
 			if(!opts.ignoreLoader)
 				this.setLoader(true);
-			if(payload instanceof jQuery)
+			if(payload instanceof H.HObject)
 				payload = this.serializeForm(payload);
-			method = method.toLowerCase();
-			var qs = method=='get'?Object.keys(payload).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(payload[k])).join('&'):'';
-			var response = await fetch(endpoint+(qs?'?'+qs:''), {
-				method		: method,
-				headers		: {
-					'Content-Type'	: 'application/json',
-					'Accept'		: 'application/json',
-				},
-				cache		: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-				credentials	: 'same-origin',
-				...(method=='get' || method=='head'?
-					{}
-				:
-					{body : JSON.stringify(payload)}
-				),
-				...opts
-			});
-			if(response.ok) {
-				var output;
-				try {
-					output = await response.json(); // Expect all responses to be in JSON format
-				} catch(e) {
-					throw new Error('The server returned an invalid response.');
+
+			var output = await H.httpRequest(method, endpoint, payload, {
+				'Content-Type'	: 'application/json',
+				'Accept'		: 'application/json',
+			}, opts, 'json', 'json');
+
+			if(output.success) {
+				delete output.success;
+				if(!opts.ignoreLoader)
+					this.setLoader(false);
+				if(output.message) {
+					this.showSuccess(output.message);
 				}
-				if(output.success) {
-					delete output.success;
-					if(!opts.ignoreLoader)
-						this.setLoader(false);
-					if(output.message) {
-						this.showSuccess(output.message);
-					}
-					return output;
-				} else if(output.errorMessage)
-					throw new Error(output.errorMessage);
-				else if(output.message)
-					throw new Error(output.message);
-				else
-					throw new Error('The server returned an invalid response.');
-			} else {
-				if(response.status != 200)
-					throw new Error('Error '+response.status+(response.statusText?': '+response.statusText:''));
-				else
-					throw new Error('A network error occured.');
-			}
+				return output;
+			} else if(output.message)
+				throw new Error(output.message);
+			else
+				throw new Error('An unexpected error occurred.');
 		} catch(e) {
 			if(e instanceof Error)
 				this.showError(e.message || e.toString());
@@ -310,56 +275,52 @@ class Controller {
 	var controller = new Controller();
 	window.controller = controller;
 
-	var MarkdownIt = window.markdownit();
-
-	$(document).on('parsePlugins', function() {
-		$('radios').on('click', 'radio', function() {
-			var $this = $(this);
-			var max = $this.parent().attr('max-selections') || 0;
-			if($this.is('[data-selected]'))
-				$this.removeAttr('data-selected', '');
+	H(document).on('parsePlugins', function() {
+		H('radios').on('click', 'radio', function() {
+			var max = this.parent().attr('max-selections') || 0;
+			if(this.is('[data-selected]'))
+				this.removeAttr('data-selected', '');
 			else {
-				$this.attr('data-selected', '');
+				this.attr('data-selected', '');
 				if(max) {
-					$this.parent().find('radio[data-selected]').not($this).slice(max-1).removeAttr('data-selected');
+					this.parent().find('radio[data-selected]').filter(e=>e!=this[0]).slice(max-1).removeAttr('data-selected');
 				}
 			}
 		});
-		$('.markdown:not([is-parsed])').each(function() {
-			$(this).html(MarkdownIt.render($(this).text().trim())).attr('is-parsed', '');
-			$(this).find('a').attr('target', '_blank');
-
+		H('.markdown:not([is-parsed])').each(function() {
+			this.html(MarkdownIt.render(this.text().trim())).attr('is-parsed', '');
+			this.find('a').attr('target', '_blank');
 		});
-		$('icon[submit]').on('click', function() {
-			$(this).closest('form').trigger('submit');
+		H('icon[submit]').on('click', function() {
+			this.closest('form').trigger('submit');
 		});
-		$('field>label:not([for])').each(function() {
-			var $inp = $(this).nextAll(':input');
+		H('field>label:not([for])').each(function() {
+			var $inp = this.nextAll('input, select, textarea');
 			if($inp) {
 				if(!$inp.attr('id'))
 					$inp.attr('id', 'field-input-'+Math.round(Math.random()*100000));
-				$(this).attr('for', $inp.attr('id'));
+				this.attr('for', $inp.attr('id'));
 			}
 		});
 	});
-	$(document).ready(function() {
-		$(document).trigger('parsePlugins');
-		$('#loginPopup').on('submit', async (e) => {
+	H(function() {
+		H(document).trigger('parsePlugins');
+		H('#loginPopup').on('submit', async (e) => {
 			e.preventDefault();
 			try {
-				await controller.apiPost('/login', $('#loginPopup'));
+				await controller.apiPost('/login', H('#loginPopup'));
 				controller.setLoader(true);
 				location.reload(true);
 			} catch(e) {}
 		}).on('reset', function() {
-			$('html').removeAttr('login-popup')
+			H('html').removeAttr('login-popup')
 		});
 
-		$('mobile-nav .close').on('click', function() {
-			$('mobile-nav').removeClass('open');
+		H('mobile-nav .close').on('click', function() {
+			H('mobile-nav').removeClass('open');
 		});
-		$('header .mobile-open').on('click', function() {
-			$('mobile-nav').addClass('open');
+		H('header .mobile-open').on('click', function() {
+			H('mobile-nav').addClass('open');
 		})
 	});
 

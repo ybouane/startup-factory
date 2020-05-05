@@ -9,14 +9,14 @@
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="text/javascript">
-$(document).ready(function() {
-	var $form = $('form.contact').on('submit', async (e) => {
+H(function() {
+	var $form = H('form.contact').on('submit', async (e) => {
 		e.preventDefault();
 		try {
 			grecaptcha.ready(async () => {
 				var payload = controller.serializeForm($form);
 				await controller.apiPost('/contact', payload);
-				await controller.delay(2000);
+				await H.delay(2000);
 				location.href = '/';
 			});
 		} catch(e) {}

@@ -5,7 +5,7 @@ const ObjectId = Schema.ObjectId;
 const uniqueValidator = require('mongoose-unique-validator');
 
 var AccountSchema = new Schema({
-	username				: { type: String, required: true, unique: true, index:true, trim: true, lowercase: true, match: H.regexp.handle },
+	name					: { type: String, required: true, unique: false, index:true, trim: true, minlength:4 },
 	bio						: { type: String, default: '', trim: true, maxlength:160, },
 	email					: { type: String, required: true, unique: true, index:true, trim: true, lowercase: true, match: H.regexp.email },
 	passHash				: { type: String, required: true },
@@ -13,7 +13,6 @@ var AccountSchema = new Schema({
 	dateCreated				: { type: Date,	required:true, default: Date.now },
 	lastActive				: { type: Date,	required:true, default: Date.now },
 	isAdmin					: { type: Boolean, default: false },
-	showActivity			: { type: Boolean, default: true },
 	profilePicture			: { type: ObjectId, ref: 'Upload' },
 	/*canAcceptPayments		: { type: Boolean, default:false },
 	stripeAccount			: {
