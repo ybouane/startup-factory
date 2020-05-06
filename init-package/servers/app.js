@@ -236,7 +236,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				return res.writeHead(302, {'Location': '/login'});
 			if(method=='POST') {
 				try {
-					if(data.bio)
+					if(data.bio!=undefined)
 						userAccount.bio = String(data.bio);
 					if(data.profilePicture != undefined) {
 						userAccount.profilePicture = (data.profilePicture && await Upload.findOne({ status: 'uploaded', uploadKey:String(data.profilePicture) }, '_id')) || undefined;
