@@ -63,15 +63,24 @@ class Controller {
 	}
 
 	deserializeForm($ele, data) {
-		for(let [k, v] of Object.entries(data)) {
+		var dataFlat = {};
+		var scanObj = (prefix, obj) => {
+			for(let [k, v] of Object.entries(obj)) {
+				if(H.isObject(v))
+					scanObj(prefix+k+'.', v);
+				else
+					dataFlat[prefix+k] = v;
+			}
+		}
+		for(let [k, v] of Object.entries(dataFlat)) {
 			var $f = $ele.find('[name="'+k+'"]');
 			if($f.is('input[type="checkbox"]')) {
 				$f.prop('checked', v);
 			} else if($f.is('[is-uploader]')) {
 				// not implemented, must be passed during uppy initialization
 			} else if($f.is('radios')) {
-				if(!Array.isArray(v))
-					continue;
+				if(!H.isArray(v))
+					v = [v];
 				$f.find('radio').each(function(){
 					if(v.includes(H(this).attr('data-value')))
 						H(this).attr('data-selected', '');
@@ -84,28 +93,33 @@ class Controller {
 	serializeForm($ele) {
 		var formObj = {};
 		$ele.find('[name]').each(function() {
-			var $this = H(this);
-			if(!$this.attr('name'))
+			if(!this.attr('name'))
 				return;
-			if($this.is('input[type="checkbox"]')) {
-				formObj[$this.attr('name')] = $this.is(':checked');
-			} else if($this.is('[is-uploader]')) {
-				var uppy = $this.triggerHandler('getUppy');
+			if(this.is('input[type="checkbox"]')) {
+				formObj[this.attr('name')] = this.is(':checked');
+			} else if(this.is('[is-uploader]')) {
+				var uppy = this.triggerHandler('getUppy');
 				var files =  uppy.getFiles();
 				if(files.find(f=>!f.progress.uploadComplete))
 					throw 'UNFINISHED_UPLOADS';
 
 				if(uppy.opts.allowMultipleUploads)
-					formObj[$this.attr('name')] = files.map(f=>f.s3Multipart.key);
+					formObj[this.attr('name')] = files.map(f=>f.s3Multipart.key);
 				else
-					formObj[$this.attr('name')] = files[0] && files[0].s3Multipart && files[0].s3Multipart.key;
-			} else if($this.is('radios')) {
-				formObj[$this.attr('name')] = $this.find('radio[data-selected]').map(function(){return H(this).attr('data-value')}).get();
-			} else if($this.is('input, select, textarea')) {
-				formObj[$this.attr('name')] = $this.val();
+					formObj[this.attr('name')] = files[0] && files[0].s3Multipart && files[0].s3Multipart.key;
+			} else if(this.is('radios')) {
+				if(this.attr('max-selections'))
+					formObj[this.attr('name')] = this.find('radio[data-selected]').map(function(){return H(this).attr('data-value')}).get();
+				else
+					formObj[this.attr('name')] = this.find('radio[data-selected]').attr('data-value');
+			} else if(this.is('input, select, textarea')) {
+				formObj[this.attr('name')] = this.val();
 			}
 		});
-		return formObj;
+		var output = {};
+		for(let [k,v] of Object.entries(formObj))
+			H.setVariable(output, k, v);
+		return output;
 	}
 
 	AWSUploader(uploader) {
