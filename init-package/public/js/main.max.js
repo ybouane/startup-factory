@@ -277,15 +277,23 @@ class Controller {
 
 	H(document).on('parsePlugins', function() {
 		H('radios').on('click', 'radio', function() {
-			var max = this.parent().attr('max-selections') || 0;
-			if(this.is('[data-selected]'))
-				this.removeAttr('data-selected', '');
-			else {
-				this.attr('data-selected', '');
-				if(max) {
-					this.parent().find('radio[data-selected]').filter(e=>e!=this[0]).slice(max-1).removeAttr('data-selected');
+			var max = this.parent().attr('max-selections');
+			if(!max) {
+				if(!this.is('[data-selected]'))
+					this.attr('data-selected', '').siblings().removeAttr('data-selected');
+			} else {
+				if(this.is('[data-selected]'))
+					this.removeAttr('data-selected', '');
+				else {
+					this.attr('data-selected', '');
+					if(max) {
+						this.parent().find('radio[data-selected]').filter(e=>e!=this[0]).slice(max-1).removeAttr('data-selected');
+					}
 				}
 			}
+		}).each(function(){
+			if(this.attr('data-value'))
+				this.children('[data-value="'+H.escape(this.attr('data-value'))+'"]').trigger('click');
 		});
 		H('.markdown:not([is-parsed])').each(function() {
 			this.html(MarkdownIt.render(this.text().trim())).attr('is-parsed', '');
