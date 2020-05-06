@@ -295,6 +295,13 @@ class Controller {
 			if(this.attr('data-value'))
 				this.children('[data-value="'+H.escape(this.attr('data-value'))+'"]').trigger('click');
 		});
+		H('input[data-prefix], input[data-suffix]').each(function() {
+			var $wrapper = this.wrap('<input-wrap></input-wrap>').parent();
+			if(this.is('[data-prefix]'))
+				H('<span></span>').text(this.attr('data-prefix')).prependTo($wrapper);
+			if(this.is('[data-suffix]'))
+				H('<span></span>').text(this.attr('data-suffix')).appendTo($wrapper);
+		});
 		H('.markdown:not([is-parsed])').each(function() {
 			this.html(MarkdownIt.render(this.text().trim())).attr('is-parsed', '');
 			this.find('a').attr('target', '_blank');

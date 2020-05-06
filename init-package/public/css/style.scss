@@ -482,6 +482,31 @@ input[type="text"], input[type="search"], input[type="email"], input[type="passw
 	border: 2px solid $primary;
 	@extend %input;
 }
+input-wrap {
+	@extend %textInput;
+	display: inline-flex;
+	flex-flow:row nowrap;
+	align-items: center;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	>span {
+		font-size: 0.8;
+		user-select: none;
+		cursor: default;
+	}
+	input[type="text"], input[type="search"], input[type="email"], input[type="password"], input[type="number"], %textInput {
+		background:transparent;
+		color:inherit;
+		border:0px solid transparent;
+		box-shadow: none;
+		font-size:inherit;
+		padding-left: 0px;
+		padding-right: 0px;
+		margin:0px;
+		flex: 1;
+		border-radius: 0px;
+	}
+}
 input[type="checkbox"] {
 	width: 20px;
 	height: 20px;
