@@ -516,6 +516,7 @@ input[type="checkbox"] {
 textarea {
 	height:200px;
 	width: calc(100% - 26px);
+	resize: vertical;
 }
 
 ::placeholder {
