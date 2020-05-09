@@ -331,6 +331,29 @@ class Controller {
 				this.attr('for', $inp.attr('id'));
 			}
 		});
+
+		H('[slide-up-down]').on('slideDown', function() {
+			if(this.is('[is-closed]')) {
+				this.removeAttr('is-closed').attr('transition-finished', '');
+				this.css('--slide-height', this[0].offsetHeight+'px');
+				this.attr('is-closed', '').removeAttr('transition-finished');
+				this[0].offsetHeight;
+				this.removeAttr('is-closed');
+			}
+		}).on('slideUp', function() {
+			if(!this.is('[is-closed]')) {
+				this.css('--slide-height', this[0].offsetHeight+'px');
+				this.removeAttr('transition-finished');
+				this[0].offsetHeight;
+				this.attr('is-closed', '');
+			}
+		}).on('transitionend', function(e) {
+			if(e.target==this[0] && e.propertyName=='max-height')
+				this.attr('transition-finished', '');
+		}).attr('transition-finished', '').each(function(){
+			this.css('--slide-height', this[0].offsetHeight+'px');
+		});
+		
 	});
 	H(function() {
 		H(document).trigger('parsePlugins');

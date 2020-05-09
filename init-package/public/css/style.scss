@@ -531,6 +531,64 @@ textarea {
 	resize: vertical;
 }
 
+[slide-up-down] {
+	transition: max-height $slowSpeed, margin-top $slowSpeed, margin-bottom $slowSpeed, padding-top $slowSpeed, padding-bottom $slowSpeed;
+	will-change: max-height, margin-top, margin-bottom, padding-top, padding-bottom;
+	--slide-height:100vh;
+	max-height:var(--slide-height);
+	&:not([transition-finished]) {
+		overflow: hidden;
+	}
+	&[transition-finished] {
+		max-height:none;
+	}
+	&[is-closed] {
+		max-height:0px;
+		margin-top:0px;
+		margin-bottom:0px;
+		padding-top:0px;
+		padding-bottom:0px;
+		&[transition-finished] {
+			display: none;
+		}
+	}
+}
+
+select {
+	appearance:none;
+	-webkit-appearance:none;
+	--select-arrow:#{$primary};
+	background-image: linear-gradient(45deg, transparent 50%, var(--select-arrow) 50%),linear-gradient(135deg, var(--select-arrow) 50%, transparent 50%),linear-gradient(to right, var(--select-arrow), var(--select-arrow));
+	background-position: calc(100% - 20px) center,calc(100% - 15px) center,calc(100% - 40px) center;
+	background-size: 5px 5px, 5px 5px, 1px 30px;
+	background-repeat: no-repeat;
+	&:hover {
+		--select-arrow:#{darken($primary, 10%)};
+	}
+}
+
+[slide-up-down] {
+	transition: max-height $slowSpeed, margin-top $slowSpeed, margin-bottom $slowSpeed, padding-top $slowSpeed, padding-bottom $slowSpeed;
+	will-change: max-height, margin-top, margin-bottom, padding-top, padding-bottom;
+	--slide-height:100vh;
+	max-height:var(--slide-height);
+	&:not([transition-finished]) {
+		overflow: hidden;
+	}
+	&[transition-finished] {
+		max-height:none;
+	}
+	&[is-closed] {
+		max-height:0px;
+		margin-top:0px;
+		margin-bottom:0px;
+		padding-top:0px;
+		padding-bottom:0px;
+		&[transition-finished] {
+			display: none;
+		}
+	}
+}
 ::placeholder {
 	color:$primary;
 	opacity:0.5;
