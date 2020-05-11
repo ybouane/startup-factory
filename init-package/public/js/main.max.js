@@ -88,6 +88,7 @@ class Controller {
 			} else if($f.is('input, select, textarea')) {
 				$f.val(v);
 			}
+			$f.trigger('change');
 		}
 	}
 	serializeForm($ele) {
