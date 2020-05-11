@@ -524,6 +524,7 @@ select {
 	background-position: calc(100% - 20px) center,calc(100% - 15px) center,calc(100% - 40px) center;
 	background-size: 5px 5px, 5px 5px, 1px 30px;
 	background-repeat: no-repeat;
+	padding-right: 50px;
 	&:hover {
 		--select-arrow:#{darken($primary, 10%)};
 	}

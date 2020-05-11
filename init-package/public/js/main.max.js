@@ -305,6 +305,7 @@ class Controller {
 					}
 				}
 			}
+			this.closest('radios').trigger('change');
 		}).each(function(){
 			if(this.attr('data-value'))
 				this.children('[data-value="'+H.escape(this.attr('data-value'))+'"]').trigger('click');
@@ -347,13 +348,15 @@ class Controller {
 				this[0].offsetHeight;
 				this.attr('is-closed', '');
 			}
+		}).on('slideToggle', function() {
+			this.trigger(this.is('[is-closed]')?'slideDown':'slideUp');
 		}).on('transitionend', function(e) {
 			if(e.target==this[0] && e.propertyName=='max-height')
 				this.attr('transition-finished', '');
 		}).attr('transition-finished', '').each(function(){
 			this.css('--slide-height', this[0].offsetHeight+'px');
 		});
-		
+
 	});
 	H(function() {
 		H(document).trigger('parsePlugins');
