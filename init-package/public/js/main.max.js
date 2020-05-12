@@ -114,6 +114,8 @@ class Controller {
 					formObj[this.attr('name')] = this.find('radio[data-selected]').map(function(){return H(this).attr('data-value')}).get();
 				else
 					formObj[this.attr('name')] = this.find('radio[data-selected]').attr('data-value');
+			} else if(this.is('input[type="number"]')) {
+				formObj[this.attr('name')] = parseFloat(this.val());
 			} else if(this.is('input, select, textarea')) {
 				formObj[this.attr('name')] = this.val();
 			}
