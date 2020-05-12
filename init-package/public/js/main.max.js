@@ -72,6 +72,7 @@ class Controller {
 					dataFlat[prefix+k] = v;
 			}
 		}
+		scanObj('', data);
 		for(let [k, v] of Object.entries(dataFlat)) {
 			var $f = $ele.find('[name="'+k+'"]');
 			if($f.is('input[type="checkbox"]')) {
