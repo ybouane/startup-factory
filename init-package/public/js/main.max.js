@@ -334,6 +334,17 @@ class Controller {
 				this.attr('for', $inp.attr('id'));
 			}
 		});
+		H('input[type="number"]').on('change', function() {
+			var step = parseFloat(this.attr('step')) || 1;
+			var signif = (String(step).split('.')[1] || '').length;
+			var min = parseFloat(this.attr('min'));
+			if(isNaN(min) || typeof min != 'number')
+				min = -Infinity;
+			var max = parseFloat(this.attr('max'));
+			if(isNaN(max) || typeof max != 'number')
+				max = +Infinity;
+			this.val(Math.max(min, Math.min(max, step*Math.round((parseFloat(this.val()) || 0)/step))).toFixed(signif));
+		});
 
 		H('[slide-up-down]').on('slideDown', function() {
 			if(this.is('[is-closed]')) {
