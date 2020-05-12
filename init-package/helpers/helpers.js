@@ -79,10 +79,10 @@ const dftFilters = {
 			//year	: 'numeric',
 		}).format(date);
 	},
-	generateOptions	: (opts, radio=false) => {
-		var makeTag = (k, v) => '<option value="'+H.escape(k)+'">'+H.escape(v)+'</option>';
+	generateOptions	: (opts, dft, radio=false) => {
+		var makeTag = (k, v) => '<option value="'+H.escape(k)+'" '+(k==dft?'selected':'')+'>'+H.escape(v)+'</option>';
 		if(radio)
-			makeTag = (k, v) => '<radio data-value="'+H.escape(k)+'">'+H.escape(v)+'</radio>';
+			makeTag = (k, v) => '<radio data-value="'+H.escape(k)+'" '+((k==dft || (H.isArray(dft) && dft.includes(k)))?'data-selected="true"':'')+'>'+H.escape(v)+'</radio>';
 		if(H.isObject(opts)) {
 			return Object.entries(opts).map(v=>makeTag(v[0], v[1])).join('');
 		} else if(H.isArray(opts)) {
