@@ -294,7 +294,7 @@ class Controller {
 	window.controller = controller;
 
 	H(document).on('parsePlugins', function() {
-		H('radios').on('click', 'radio', function() {
+		H('radios:not([radios-loaded])').attr('radios-loaded', '').on('click', 'radio', function() {
 			var max = this.parent().attr('max-selections');
 			if(!max) {
 				if(!this.is('[data-selected]'))
@@ -320,12 +320,13 @@ class Controller {
 				H('<span></span>').text(this.attr('data-prefix')).prependTo($wrapper);
 			if(this.is('[data-suffix]'))
 				H('<span></span>').text(this.attr('data-suffix')).appendTo($wrapper);
+			this.removeAttr('data-prefix').removeAttr('data-suffix');
 		});
 		H('.markdown:not([is-parsed])').each(function() {
 			this.html(MarkdownIt.render(this.text().trim())).attr('is-parsed', '');
 			this.find('a').attr('target', '_blank');
 		});
-		H('icon[submit]').on('click', function() {
+		H('icon[submit]').off('click.iconSubmit').on('click.iconSubmit', function() {
 			this.closest('form').trigger('submit');
 		});
 		H('field>label:not([for])').each(function() {
@@ -336,7 +337,7 @@ class Controller {
 				this.attr('for', $inp.attr('id'));
 			}
 		});
-		H('input[type="number"]').on('change', function() {
+		H('input[type="number"]').off('change.numInput').on('change.numInput', function() {
 			var step = parseFloat(this.attr('step')) || 1;
 			var signif = (String(step).split('.')[1] || '').length;
 			var min = parseFloat(this.attr('min'));
@@ -348,7 +349,7 @@ class Controller {
 			this.val(Math.max(min, Math.min(max, step*Math.round((parseFloat(this.val()) || 0)/step))).toFixed(signif));
 		});
 
-		H('[slide-up-down]').on('slideDown', function() {
+		H('[slide-up-down]:not([slider-loaded])').on('slideDown', function() {
 			if(this.is('[is-closed]')) {
 				this.removeAttr('is-closed').attr('transition-finished', '');
 				this.css('--slide-height', this[0].offsetHeight+'px');
@@ -370,7 +371,7 @@ class Controller {
 				this.attr('transition-finished', '');
 		}).attr('transition-finished', '').each(function(){
 			this.css('--slide-height', this[0].offsetHeight+'px');
-		});
+		}).attr('slider-loaded', '');
 
 	});
 	H(function() {
