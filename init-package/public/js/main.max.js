@@ -323,7 +323,7 @@ class Controller {
 			this.removeAttr('data-prefix').removeAttr('data-suffix');
 		});
 		H('.markdown:not([is-parsed])').each(function() {
-			this.html(MarkdownIt.render(this.text().trim())).attr('is-parsed', '');
+			this.html((new MarkdownIt()).render(this.text().trim())).attr('is-parsed', '');
 			this.find('a').attr('target', '_blank');
 		});
 		H('icon[submit]').off('click.iconSubmit').on('click.iconSubmit', function() {
