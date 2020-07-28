@@ -473,7 +473,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 		'/contact'						: async (req, res, urlMatches, method, data) => {
 			if(method=='POST') {
 				if(!data || !data['g-recaptcha-response'] || typeof data['g-recaptcha-response']!='string')
-					throw 'Could not validate your captcha response.';
+					throw new H.Error('Could not validate your captcha response.', 400);
 				var recaptchaRequest = await H.httpPost('https://www.google.com/recaptcha/api/siteverify', {
 					secret		: config.recaptcha.secret,
 					response	: data['g-recaptcha-response'],
@@ -481,13 +481,13 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				}, undefined, undefined, 'form');
 
 				if(!recaptchaRequest.success)
-					throw 'Could not validate your captcha response.';
+					throw new H.Error('Could not validate your captcha response.', 400);
 				if(typeof data.email!='string' || !data.email.match(H.regexp.email))
-					throw 'Invalid email address!';
+					throw new H.Error('Invalid email address!', 400);
 				if(typeof data.subject!='string' || data.subject.length<3)
-					throw 'Invalid subject. Please enter a subject at least 3 characters long.';
+					throw new H.Error('Invalid subject. Please enter a subject at least 3 characters long.', 400);
 				if(typeof data.message!='string' || data.message.length<5)
-					throw 'Invalid message. Please enter a valid message to contact us.';
+					throw new H.Error('Invalid message. Please enter a valid message to contact us.', 400);
 
 				var emailHtml = await renderEmail('../templates/emails/contact.jinja', {
 					subject	: data.subject,

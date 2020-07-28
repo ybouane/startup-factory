@@ -20,7 +20,7 @@ const cwd = process.cwd();
 		var contactEmail = await H.input('Contact email address: ') || '';
 
 		var primaryColor = await H.input('Primary Color: (#3498db) ') || '#3498db';
-		var secondaryColor = await H.input('Primary Color: (#2c3e50) ') || '#2c3e50';
+		var secondaryColor = await H.input('Secondary Color: (#2c3e50) ') || '#2c3e50';
 
 		var setupAll = await H.input('Setup whole server [git, nginx, node, pm2, mongodb, node-gyp]? (yes) ') || 'y';
 		if(['y', 'yes'].includes(setupAll.toLowerCase()))

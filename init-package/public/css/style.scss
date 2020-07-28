@@ -1,14 +1,17 @@
 $primary: _PRIMARY_COLOR_;
+$primaryLighter:desaturate(lighten($primary, 15%), 8%);
 $primaryContrast: #FFFFFF;
 //$primaryHighlight: #F6B93B;
 
 $secondary: _SECONDARY_COLOR_;
+$secondaryLighter:desaturate(lighten($primary, 15%), 8%);
 $secondaryContrast: #FFFFFF;
 //$secondaryHighlight: #F6B93B;
 
 $mobileBreakPoint:600px;
 $tabletBreakPoint:1000px;
 
+$slowSpeed: 0.8s;
 $regularSpeed: 0.4s;
 $fastSpeed: 0.2s;
 
