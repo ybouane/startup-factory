@@ -120,7 +120,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 		'/sitemap.xml'					: async (req, res, urlMatches, method, data) => {
 			var formatDate = (date) => {
 				var d = new Date(date);
-				return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2, '0')+'-'+d.getDate();
+				return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2, '0')+'-'+String(d.getDate()).padStart(2, '0');
 			}
 			res.writeHead(200, {'Content-Type' : 'application/xml'});
 			res.end(await H.renderFile('../templates/pages/sitemap.jinja', {
