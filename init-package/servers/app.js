@@ -238,6 +238,8 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 				try {
 					if(data.bio!=undefined)
 						userAccount.bio = String(data.bio);
+					if(data.name!=undefined && String(data.name).length>3)
+						userAccount.name = String(data.name);
 					if(data.profilePicture != undefined) {
 						userAccount.profilePicture = (data.profilePicture && await Upload.findOne({ status: 'uploaded', uploadKey:String(data.profilePicture) }, '_id')) || undefined;
 						userAccount.profilePicture = userAccount.profilePicture && userAccount.profilePicture._id;

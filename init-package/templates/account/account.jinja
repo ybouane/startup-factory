@@ -4,7 +4,7 @@
 	<em>{{ userAccount.bio }}</em>
 </a>
 
-{% comment %}
+{#
 <h2>Balance</h2>
 {% if userAccount.canAcceptPayments %}
 <account-payments>
@@ -28,4 +28,4 @@
 {% else %}
 <a href="https://connect.stripe.com/express/oauth/authorize?client_id={{ clientId }}&state={{ stateToken }}&stripe_user[email]={{ userAccount.email }}" target="_blank" class="button">Setup payments</a>
 {% endif %}
-{% endcomment %}
+#}

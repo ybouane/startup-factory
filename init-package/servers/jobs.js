@@ -52,8 +52,10 @@ const Job			= require('../models/job')(siteDb);
 				console.log(job.data);
 				switch(job.jobType) {
 					case 'sendEmail':
-						doComplete = false;
+						//doComplete = false;
 						//await sendEmail(job);
+						console.log(job.data);
+						await sendEmail(job.data.to, job.data.from, job.data.subject, job.data.html, job.data.text);
 					break;
 				}
 				if(doComplete)
