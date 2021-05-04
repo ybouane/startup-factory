@@ -651,7 +651,7 @@ H.httpServer(2323, async (req, res, _, method, data) => {
 
 }, {
 	beforeHandler	: async (req, res) => {
-		res.setHeader('Content-Type', 'text/html, charset=utf-8');
+		res.setHeader('Content-Type', 'text/html; charset=utf-8');
 		res.setHeader('X-XSS-Protection', '1; mode=block');
 		res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
 		res.setHeader('X-Content-Type-Options', 'nosniff');
