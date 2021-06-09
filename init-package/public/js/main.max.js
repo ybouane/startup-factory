@@ -197,11 +197,11 @@ class Controller {
 
 
 				for(let f of preloadFiles) {
-					let preview = 'https://ticket19.com/images/fileIcons/unknown.svg';
+					let preview = '/images/fileIcons/unknown.svg';
 					if(f.public && ['jpg', 'jpeg', 'png', 'gif'].includes(f.format))
 						preview = 'https://'+f.bucket+'.s3.amazonaws.com/'+f.uploadKey;
 					/*else if (['csv', 'jpeg', 'jpg', 'json', 'mp4', 'png', 'txt', 'xls', 'xlsx', 'xml', 'zip'].includes(f.format))
-						preview = 'https://ticket19.com/images/fileIcons/'+f.format+'.svg';*/
+						preview = '/images/fileIcons/'+f.format+'.svg';*/
 
 					uppyObj.addFile({
 						name		: f.originalName, // file name
